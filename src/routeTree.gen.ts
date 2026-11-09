@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DevelopersRouteImport } from './routes/developers'
 import { Route as HostRouteImport } from './routes/host'
+import { Route as RoomCodeRouteImport } from './routes/room.$code'
 import { Route as ApiPublicRoomsRouteImport } from './routes/api/public/rooms'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const HostRoute = HostRouteImport.update({
   path: '/host',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RoomCodeRoute = RoomCodeRouteImport.update({
+  id: '/room/$code',
+  path: '/room/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicRoomsRoute = ApiPublicRoomsRouteImport.update({
   id: '/api/public/rooms',
   path: '/api/public/rooms',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/developers': typeof DevelopersRoute
   '/host': typeof HostRoute
+  '/room/$code': typeof RoomCodeRoute
   '/api/public/rooms': typeof ApiPublicRoomsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/developers': typeof DevelopersRoute
   '/host': typeof HostRoute
+  '/room/$code': typeof RoomCodeRoute
   '/api/public/rooms': typeof ApiPublicRoomsRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,28 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/developers': typeof DevelopersRoute
   '/host': typeof HostRoute
+  '/room/$code': typeof RoomCodeRoute
   '/api/public/rooms': typeof ApiPublicRoomsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/developers' | '/host' | '/api/public/rooms'
+  fullPaths: '/' | '/developers' | '/host' | '/room/$code' | '/api/public/rooms'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/developers' | '/host' | '/api/public/rooms'
-  id: '__root__' | '/' | '/developers' | '/host' | '/api/public/rooms'
+  to: '/' | '/developers' | '/host' | '/room/$code' | '/api/public/rooms'
+  id:
+    | '__root__'
+    | '/'
+    | '/developers'
+    | '/host'
+    | '/room/$code'
+    | '/api/public/rooms'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DevelopersRoute: typeof DevelopersRoute
   HostRoute: typeof HostRoute
+  RoomCodeRoute: typeof RoomCodeRoute
   ApiPublicRoomsRoute: typeof ApiPublicRoomsRoute
 }
 
@@ -92,6 +108,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HostRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/room/$code': {
+      id: '/room/$code'
+      path: '/room/$code'
+      fullPath: '/room/$code'
+      preLoaderRoute: typeof RoomCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/rooms': {
       id: '/api/public/rooms'
       path: '/api/public/rooms'
@@ -106,6 +129,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DevelopersRoute: DevelopersRoute,
   HostRoute: HostRoute,
+  RoomCodeRoute: RoomCodeRoute,
   ApiPublicRoomsRoute: ApiPublicRoomsRoute,
 }
 export const routeTree = rootRouteImport
