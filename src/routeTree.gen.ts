@@ -10,11 +10,23 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DevelopersRouteImport } from './routes/developers'
+import { Route as HostRouteImport } from './routes/host'
 import { Route as ApiPublicRoomsRouteImport } from './routes/api/public/rooms'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DevelopersRoute = DevelopersRouteImport.update({
+  id: '/developers',
+  path: '/developers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HostRoute = HostRouteImport.update({
+  id: '/host',
+  path: '/host',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicRoomsRoute = ApiPublicRoomsRouteImport.update({
@@ -25,27 +37,35 @@ const ApiPublicRoomsRoute = ApiPublicRoomsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/developers': typeof DevelopersRoute
+  '/host': typeof HostRoute
   '/api/public/rooms': typeof ApiPublicRoomsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/developers': typeof DevelopersRoute
+  '/host': typeof HostRoute
   '/api/public/rooms': typeof ApiPublicRoomsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/developers': typeof DevelopersRoute
+  '/host': typeof HostRoute
   '/api/public/rooms': typeof ApiPublicRoomsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/rooms'
+  fullPaths: '/' | '/developers' | '/host' | '/api/public/rooms'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/rooms'
-  id: '__root__' | '/' | '/api/public/rooms'
+  to: '/' | '/developers' | '/host' | '/api/public/rooms'
+  id: '__root__' | '/' | '/developers' | '/host' | '/api/public/rooms'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DevelopersRoute: typeof DevelopersRoute
+  HostRoute: typeof HostRoute
   ApiPublicRoomsRoute: typeof ApiPublicRoomsRoute
 }
 
@@ -56,6 +76,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/developers': {
+      id: '/developers'
+      path: '/developers'
+      fullPath: '/developers'
+      preLoaderRoute: typeof DevelopersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/host': {
+      id: '/host'
+      path: '/host'
+      fullPath: '/host'
+      preLoaderRoute: typeof HostRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/rooms': {
@@ -70,6 +104,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DevelopersRoute: DevelopersRoute,
+  HostRoute: HostRoute,
   ApiPublicRoomsRoute: ApiPublicRoomsRoute,
 }
 export const routeTree = rootRouteImport
