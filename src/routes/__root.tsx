@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import { Toaster } from "@/components/ui/sonner";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -81,11 +82,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Card Night — Play Uno with friends" },
+      { name: "description", content: "Multiplayer card games with chat. Join with a room code or host your own." },
+      { property: "og:title", content: "Card Night" },
+      { property: "og:description", content: "Multiplayer card games with chat." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
@@ -96,6 +96,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Bungee&family=Rubik:wght@400;500;700&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -124,7 +126,17 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      <header className="border-b border-border bg-card/60 backdrop-blur">
+        <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+          <Link to="/" className="font-display text-xl text-primary">Card Night</Link>
+          <div className="flex items-center gap-2 text-sm">
+            <Link to="/developers" className="rounded-full px-3 py-1.5 text-muted-foreground hover:text-foreground">API</Link>
+            <Link to="/host" className="rounded-full bg-primary px-4 py-1.5 font-bold text-primary-foreground">Host</Link>
+          </div>
+        </nav>
+      </header>
       <Outlet />
+      <Toaster richColors position="top-center" />
     </QueryClientProvider>
   );
 }
