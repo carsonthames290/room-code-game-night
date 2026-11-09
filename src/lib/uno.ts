@@ -40,7 +40,7 @@ export function shuffle<T>(arr: T[], rand = Math.random): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(rand() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+    [a[i], a[j]] = [a[j]!, a[i]!];
   }
   return a;
 }
@@ -52,7 +52,7 @@ export function startGame(playerIds: string[], rand = Math.random): UnoState {
   for (const p of playerIds) hands[p] = deck.splice(0, 7);
   // First discard must be a number card
   let idx = deck.findIndex((c) => /^\d$/.test(c.value));
-  const first = deck.splice(idx, 1)[0];
+  const first = deck.splice(idx, 1)[0]!;
   return {
     deck, discard: [first], hands, order: [...playerIds], turn: 0, direction: 1,
     currentColor: first.color as Color, winner: null, log: "Game started",
@@ -60,7 +60,7 @@ export function startGame(playerIds: string[], rand = Math.random): UnoState {
 }
 
 export function canPlay(card: Card, s: UnoState): boolean {
-  const top = s.discard[s.discard.length - 1];
+  const top = s.discard[s.discard.length - 1]!;
   if (card.color === "wild") return true;
   return card.color === s.currentColor || card.value === top.value;
 }
@@ -78,7 +78,7 @@ function draw(s: UnoState, pid: string, count: number) {
       s.discard = [top];
       if (s.deck.length === 0) return;
     }
-    s.hands[pid].push(s.deck.pop()!);
+    s.hands[pid]!.push(s.deck.pop()!);
   }
 }
 
@@ -87,9 +87,10 @@ export function playCard(prev: UnoState, pid: string, cardId: string, chosen?: C
   if (s.winner) throw new Error("Game over");
   if (s.order[s.turn] !== pid) throw new Error("Not your turn");
   const hand = s.hands[pid];
+  if (!hand) throw new Error("Not in game");
   const i = hand.findIndex((c) => c.id === cardId);
   if (i < 0) throw new Error("Card not in hand");
-  const card = hand[i];
+  const card = hand[i]!;
   if (!canPlay(card, s)) throw new Error("Can't play that card");
   if (card.color === "wild" && !chosen) throw new Error("Choose a color");
   hand.splice(i, 1);
@@ -107,8 +108,8 @@ export function playCard(prev: UnoState, pid: string, cardId: string, chosen?: C
       s.direction = (s.direction * -1) as 1 | -1;
       s.turn = two ? s.turn : next(s, 1);
       break;
-    case "draw2": draw(s, s.order[next(s)], 2); s.turn = next(s, 2); break;
-    case "wild4": draw(s, s.order[next(s)], 4); s.turn = next(s, 2); break;
+    case "draw2": draw(s, s.order[next(s)]!, 2); s.turn = next(s, 2); break;
+    case "wild4": draw(s, s.order[next(s)]!, 4); s.turn = next(s, 2); break;
     default: s.turn = next(s, 1);
   }
   s.log = `played ${card.color === "wild" ? chosen : card.color} ${card.value}`;

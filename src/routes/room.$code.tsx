@@ -24,7 +24,7 @@ const colorBg: Record<string, string> = {
 };
 const label = (v: string) => ({ skip: "⊘", reverse: "⇄", draw2: "+2", wild: "★", wild4: "+4" })[v] ?? v;
 
-function UnoCard({ card, onClick, dim, big }: { card: Card; onClick?: () => void; dim?: boolean; big?: boolean }) {
+function UnoCard({ card, onClick, dim, big }: { card: Card; onClick?: (() => void) | undefined; dim?: boolean; big?: boolean }) {
   return (
     <button type="button" onClick={onClick} disabled={!onClick}
       className={`${colorBg[card.color]} ${big ? "h-36 w-24 text-4xl" : "h-28 w-20 text-3xl"} flex shrink-0 items-center justify-center rounded-xl border-4 border-foreground font-display text-foreground shadow-card transition ${onClick ? "hover:-translate-y-3" : ""} ${dim ? "opacity-40" : ""}`}>
@@ -133,7 +133,7 @@ function Game({ code, seat }: { code: string; seat: Seat }) {
                 className="flex h-36 w-24 items-center justify-center rounded-xl border-4 border-foreground bg-uno-wild font-display text-uno-red shadow-card transition enabled:hover:-translate-y-1 disabled:opacity-60">
                 UNO
               </button>
-              <UnoCard card={g.top} big />
+              {g.top && <UnoCard card={g.top} big />}
               <div className="text-sm text-muted-foreground">
                 <div className={`mb-1 h-6 w-6 rounded-full border-2 border-foreground ${colorBg[g.currentColor]}`} />
                 {g.currentColor}<br />{g.log}

@@ -7,7 +7,7 @@ const code = z.string().trim().min(4).max(8);
 const token = z.string().min(10).max(100);
 
 export const createRoom = createServerFn({ method: "POST" })
-  .inputValidator(z.object({ name }))
+  .validator(z.object({ name }))
   .handler(async ({ data }) => {
     const { insertRoom, addPlayer } = await import("./rooms.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -18,7 +18,7 @@ export const createRoom = createServerFn({ method: "POST" })
   });
 
 export const joinRoom = createServerFn({ method: "POST" })
-  .inputValidator(z.object({ name, code }))
+  .validator(z.object({ name, code }))
   .handler(async ({ data }) => {
     const { loadRoom, addPlayer } = await import("./rooms.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -33,7 +33,7 @@ export const joinRoom = createServerFn({ method: "POST" })
   });
 
 export const getRoom = createServerFn({ method: "POST" })
-  .inputValidator(z.object({ code, token }))
+  .validator(z.object({ code, token }))
   .handler(async ({ data }) => {
     const { auth } = await import("./rooms.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -66,7 +66,7 @@ export const getRoom = createServerFn({ method: "POST" })
   });
 
 export const startRoomGame = createServerFn({ method: "POST" })
-  .inputValidator(z.object({ code, token }))
+  .validator(z.object({ code, token }))
   .handler(async ({ data }) => {
     const { auth } = await import("./rooms.server");
     const { startGame } = await import("./uno");
@@ -80,7 +80,7 @@ export const startRoomGame = createServerFn({ method: "POST" })
   });
 
 export const unoAction = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     z.object({
       code, token,
       action: z.enum(["play", "draw"]),
@@ -108,7 +108,7 @@ export const unoAction = createServerFn({ method: "POST" })
   });
 
 export const backToLobby = createServerFn({ method: "POST" })
-  .inputValidator(z.object({ code, token }))
+  .validator(z.object({ code, token }))
   .handler(async ({ data }) => {
     const { auth } = await import("./rooms.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -119,7 +119,7 @@ export const backToLobby = createServerFn({ method: "POST" })
   });
 
 export const sendMessage = createServerFn({ method: "POST" })
-  .inputValidator(z.object({ code, token, body: z.string().trim().min(1).max(500) }))
+  .validator(z.object({ code, token, body: z.string().trim().min(1).max(500) }))
   .handler(async ({ data }) => {
     const { auth } = await import("./rooms.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -129,7 +129,7 @@ export const sendMessage = createServerFn({ method: "POST" })
   });
 
 export const createApiKey = createServerFn({ method: "POST" })
-  .inputValidator(z.object({ label: z.string().trim().min(1).max(60) }))
+  .validator(z.object({ label: z.string().trim().min(1).max(60) }))
   .handler(async ({ data }) => {
     const { randomToken, sha256 } = await import("./rooms.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
