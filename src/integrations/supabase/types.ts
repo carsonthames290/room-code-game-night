@@ -14,7 +14,121 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      api_keys: {
+        Row: {
+          created_at: string
+          id: string
+          key_hash: string
+          label: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          key_hash: string
+          label: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          key_hash?: string
+          label?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          player_name: string
+          room_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          player_name: string
+          room_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          player_name?: string
+          room_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      players: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          room_id: string
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          room_id: string
+          token: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          room_id?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "players_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rooms: {
+        Row: {
+          code: string
+          created_at: string
+          created_via_api: boolean
+          game: Json | null
+          host_player_id: string | null
+          id: string
+          status: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_via_api?: boolean
+          game?: Json | null
+          host_player_id?: string | null
+          id?: string
+          status?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_via_api?: boolean
+          game?: Json | null
+          host_player_id?: string | null
+          id?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
