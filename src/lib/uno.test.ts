@@ -16,11 +16,11 @@ describe("uno", () => {
   it("deck has 108 cards", () => expect(buildDeck()).toHaveLength(108));
   it("deals 7 cards each", () => {
     const s = startGame(["a", "b"]);
-    expect(s.hands.a).toHaveLength(7);
+    expect(s.hands['a']).toHaveLength(7);
   });
   it("draw2 gives next player 2 cards and skips them", () => {
     const s = playCard(base(), "a", "a1");
-    expect(s.hands.b).toHaveLength(3);
+    expect(s.hands['b']).toHaveLength(3);
     expect(s.order[s.turn]).toBe("c");
   });
   it("rejects off-color card", () => {
@@ -32,6 +32,6 @@ describe("uno", () => {
   it("wild sets chosen color", () => {
     const s = playCard(base(), "a", "a3", "blue");
     expect(s.currentColor).toBe("blue");
-    expect(s.hands.b).toHaveLength(5);
+    expect(s.hands['b']).toHaveLength(5);
   });
 });

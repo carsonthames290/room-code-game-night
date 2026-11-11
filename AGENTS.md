@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Game state and secrets live in tables with no client RLS policies; all reads/writes go through server functions using a per-player token (no user accounts). Why: hands must stay hidden and players join without signing up.
+- Live updates use a Realtime broadcast channel `room-CODE` as a refetch ping plus 4s polling. Why: no table needs to be exposed to the browser.
